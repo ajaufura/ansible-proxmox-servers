@@ -1,9 +1,10 @@
 ---
-- hosts: all
-  become: true
+- name: check disk space
+  hosts: "{{ hosts }}"
   tasks:
-  - name: Update and upgrade apt packages
-    apt:
-      upgrade: yes
-      update_cache: yes
-      cache_valid_time: 86400  #One day
+    - name: get disk usage
+      command: df -h
+      register: disk_usage
+    - name: check disk space available
+      shell: df -h / | awk 'NR==2 {print $5}'
+      register: disk_usage
