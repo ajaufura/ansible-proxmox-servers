@@ -7,3 +7,8 @@
     - name: Get Docker container list
       raw: docker ps --format "{{.Names}}"
       register: docker_output
+
+    - name: Print Docker container names
+      debug:
+        var: item
+      loop: "{{ docker_output.stdout_lines }}"
