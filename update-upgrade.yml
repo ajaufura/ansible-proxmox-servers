@@ -1,7 +1,7 @@
 ---
 - name: Update APT cache and upgrade packages
   hosts: all
-  become: yes
+  become: true
   become_method: sudo
   become_user: root
 
