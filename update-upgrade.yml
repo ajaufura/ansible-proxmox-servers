@@ -1,6 +1,6 @@
 ---
 - name: Update and Upgrade APT packages
-  hosts: kubemaster1
+  hosts: all
   become: yes
   become_method: sudo
 
