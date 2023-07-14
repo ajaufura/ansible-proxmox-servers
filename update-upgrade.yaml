@@ -1,18 +1,13 @@
 ---
-- name: Update APT cache and upgrade packages
-  hosts: all
-  become: yes
-  become_method: sudo
-  become_user: ajaufura
-
+---
+- hosts: all
   tasks:
-    - name: Update APT cache
+    - ping: ~
+    - name: Update APT package manager repositories cache
+      become: true
       apt:
         update_cache: yes
-
-    - name: Upgrade APT packages
+    - name: Upgrade installed packages
+      become: true
       apt:
-        upgrade: safe
-        autoremove: yes
-        autoclean: yes
-      when: inventory_hostname == play_hosts[0]
+        upgrade: dist
