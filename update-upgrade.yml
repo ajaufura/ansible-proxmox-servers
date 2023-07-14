@@ -9,6 +9,7 @@
       apt:
         update_cache: yes
       become: yes
+      serial: 1
 
     - name: Upgrade APT packages
       apt:
@@ -16,4 +17,5 @@
         autoremove: yes
         autoclean: yes
       become: yes
+      serial: 1
 
