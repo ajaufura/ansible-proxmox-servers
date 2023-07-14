@@ -1,0 +1,14 @@
+---
+- name: List Docker Containers
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Get Docker container facts
+      docker_container_facts:
+        register: docker_containers
+
+    - name: Print Docker container names
+      debug:
+        var: item.name
+      loop: "{{ docker_containers.containers }}"
