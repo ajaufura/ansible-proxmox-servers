@@ -3,12 +3,10 @@
   hosts: all
   gather_facts: false
 
-  tasks:
-    - name: Get Docker container list
-      raw: docker ps --format "{{.Names}}"
-      register: docker_output
-
-    - name: Print Docker container names
-      debug:
-        var: item
-      loop: "{{ docker_output.stdout_lines }}"
+ tasks:
+ - name: Retrive Name of Docker Container
+    shell: "docker ps --format '{% raw %}{{ .Names }}{% endraw %}'"
+    register: Name
+ - name: Retreive Ip of Docker Container
+    shell: "docker inspect --format '{%raw %}{{ .NetworkSettings.IPAddress }}{% endraw %}' $(docker ps --format '{% raw %}{{ .Names }}{% endraw %}')"
+    register: IP
