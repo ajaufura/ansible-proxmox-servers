@@ -1,6 +1,6 @@
 ---
 - name: Update and Upgrade APT packages
-  hosts: raspberrypi
+  hosts: all
   become: yes
   become_method: sudo
 
