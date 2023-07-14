@@ -1,21 +1,22 @@
 ---
-- name: Update and Upgrade APT packages
+- name: Update APT cache
   hosts: all
   become: yes
   become_method: sudo
 
   tasks:
-    - name: Update APT cache
+    - name: Run apt update
       apt:
         update_cache: yes
-      become: yes
-      serial: 1
 
-    - name: Upgrade APT packages
+- name: Upgrade APT packages
+  hosts: all
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: Run apt upgrade
       apt:
         upgrade: safe
         autoremove: yes
         autoclean: yes
-      become: yes
-      serial: 1
-
