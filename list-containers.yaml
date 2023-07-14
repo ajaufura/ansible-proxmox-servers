@@ -4,9 +4,17 @@
   gather_facts: false
 
  tasks:
- - name: Retrive Name of Docker Container
-    shell: "docker ps --format '{% raw %}{{ .Names }}{% endraw %}'"
-    register: Name
- - name: Retreive Ip of Docker Container
-    shell: "docker inspect --format '{%raw %}{{ .NetworkSettings.IPAddress }}{% endraw %}' $(docker ps --format '{% raw %}{{ .Names }}{% endraw %}')"
-    register: IP
+ - name: Get infos on container
+  docker_container_info:
+    name: prometheus
+  register: result
+
+ - name: Does container exist?
+  debug:
+    msg: "The container {{ 'exists' if result.exists else 'does not exist' }}"
+
+ - name: Print information about container
+  debug:
+    var: result.container
+  when: result.exists
+
