@@ -1,6 +1,6 @@
 ---
 - name: List Docker Containers
-  hosts: target_host
+  hosts: all
   gather_facts: false
 
   tasks:
