@@ -1,9 +1,7 @@
 ---
-- name: List Docker Containers
-  hosts: all
-  gather_facts: false
-
- tasks:
+hosts: all
+gather_facts: false
+tasks:
   - name: Get infos on container
     docker_container_info:
       name: prometheus
