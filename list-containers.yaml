@@ -1,14 +1,9 @@
 ---
 - name: List Docker Containers
-  hosts: all
+  hosts: target_host
   gather_facts: false
 
   tasks:
     - name: Get Docker container list
-      shell: docker ps --format "{{.Names}}"
+      raw: docker ps --format "{{.Names}}"
       register: docker_output
-
-    - name: Print Docker container names
-      debug:
-        var: item
-      loop: "{{ docker_output.stdout_lines }}"
