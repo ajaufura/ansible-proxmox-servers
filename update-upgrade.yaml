@@ -7,5 +7,5 @@
         update_cache: yes
     - name: Upgrade all packages
       apt:
-        upgrade: full
+        upgrade: dist
         force_apt_get: yes
