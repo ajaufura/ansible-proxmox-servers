@@ -9,4 +9,4 @@
       shell: df -h / | awk 'NR==2 {print $5}'
       register: disk_usage
     - debug:
-             var: command_output.stdout_lines
+             var: disk_usage.stdout_lines
