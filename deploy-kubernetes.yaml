@@ -1,0 +1,55 @@
+---
+- name: Deploy Kubernetes
+  hosts: master
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install Kubernetes dependencies
+      apt:
+        name: ['apt-transport-https', 'curl']
+        state: present
+
+    - name: Add Kubernetes apt-key
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+
+    - name: Add Kubernetes apt repository
+      apt_repository:
+        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
+
+    - name: Install Kubernetes packages
+      apt:
+        name: ['kubelet', 'kubeadm', 'kubectl']
+        state: present
+
+    - name: Initialize the Kubernetes control plane
+      command: kubeadm init --pod-network-cidr=10.244.0.0/16
+      register: kubeadm_init_output
+      changed_when: "'kubeadm join' in kubeadm_init_output.stdout"
+
+  - name: Save join command
+    blockinfile:
+      path: ~/join-command.sh
+      block: "{{ kubeadm_init_output.stdout_lines[-1] }}"
+
+- name: Join worker nodes to the control plane
+  hosts: worker
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Copy join command
+      copy:
+        src: ~/join-command.sh
+        dest: ~/join-command.sh
+
+    - name: Join worker nodes to the control plane
+      command: sh ~/join-command.sh
