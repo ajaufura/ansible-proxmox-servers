@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: all  #modify host here
   become: yes
   tasks:
     - name: Update apt cache
