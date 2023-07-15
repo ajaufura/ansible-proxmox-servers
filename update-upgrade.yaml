@@ -9,6 +9,3 @@
       apt:
         upgrade: yes
         force_apt_get: yes
-    - name: Reboot if needed
-      reboot:
-        when: ansible_facts.reboot_required
