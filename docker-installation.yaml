@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose
+        state: present
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+    - name: Create a directory for Docker Compose files
+      file:
+        path: /etc/docker-compose
+        state: directory
+    - name: Copy the Docker Compose file
+      copy:
+        src: docker-compose.yaml
+        dest: /etc/docker-compose/docker-compose.yaml
+    - name: Run Docker Compose
+      command: docker-compose up -d
