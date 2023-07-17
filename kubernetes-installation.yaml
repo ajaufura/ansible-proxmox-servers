@@ -1,0 +1,30 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: Install Kubernetes
+    apt:
+      name: kubeadm
+      state: present
+  - name: Create Kubernetes cluster
+    kubeadm:
+      wait-for-control-plane: true
+      control-plane-machines:
+        - "{{ ansible_hostname }}"
+      worker-machines:
+        - "{{ item }}"
+      for: "{{ range(2,4) | list }}"
+      update-channels:
+        - stable
+  - name: Install Calico networking
+    apt:
+      name: calico-node
+      state: present
+  - name: Configure Calico networking
+    calicoctl:
+      command: apply -f /etc/calico/calico.yaml
+  - name: Create Kubernetes admin user
+    kubectl:
+      command: create clusterrolebinding admin --clusterrole=cluster-admin --user=admin
+  - name: Restart Kubernetes
+    command: systemctl restart kubelet
