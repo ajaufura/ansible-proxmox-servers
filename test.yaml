@@ -9,18 +9,3 @@
         create: yes
         insertafter: EOF
         regexp: '^SystemdCgroup\s*='
-        
-    - name: Disable swap
-      command: sudo swapoff -a
-
-    - name: Comment out swap line in /etc/fstab
-      lineinfile:
-        path: /etc/fstab
-        regexp: '^/dev/.*swap.*'
-        line: '# {{ item }}'
-        state: present
-      register: swap_line
-
-    - name: Reload /etc/fstab if swap line was changed
-      command: mount -a
-      when: swap_line.changed
