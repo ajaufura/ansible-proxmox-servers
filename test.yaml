@@ -20,10 +20,12 @@
     - name: Disable swap
       command: swapoff -a
 
-    - name: Find the swap line in /etc/fstab
+    - name: Comment the swap line with backreferences
       lineinfile:
         path: /etc/fstab
-        regexp: '^\s*(swap.*)'
+        regexp: '^(.*\sswap\s.*)$'
+        line: '# \1'
+        backrefs: yes
         state: present
 
     - name: Print the modified /etc/fstab
