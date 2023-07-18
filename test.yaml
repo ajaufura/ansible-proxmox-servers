@@ -4,7 +4,7 @@
     - name: Change the SystemdCgroup value to true
       lineinfile:
         path: /home/ajaufura/test.toml
-        line: "SystemdCgroup = true"
+        line: "SystemdCgroup = false"
         state: present
         create: yes
         insertafter: EOF
