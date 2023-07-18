@@ -32,7 +32,7 @@
         line: '# \1'
         backrefs: yes
         state: present
-      when: swap_line_commented.rc != 0
+      when: swap_line_commented.rc = 0
 
     - name: Print the modified /etc/fstab
       command: cat /etc/fstab
