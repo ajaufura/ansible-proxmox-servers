@@ -6,7 +6,7 @@
   - name: Find the SystemdCgroup key
     lineinfile:
       path: /home/ajaufuratest.toml
-      line: "[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]"
+      line: '[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]'
       state: present
   - name: Change the SystemdCgroup value to true
     lineinfile:
