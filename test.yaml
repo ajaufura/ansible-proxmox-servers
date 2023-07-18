@@ -2,6 +2,27 @@
 - hosts: kubemaster1
   become: true
   tasks:
+  
+    ###### Installing containerd #####
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      become: true
+
+    - name: Install containerd package
+      apt:
+        name: containerd
+        state: present
+      become: true
+
+    - name: Create the containerd directory
+      file:
+        path: /etc/containerd
+        state: directory
+
+    - name: Run containerd config default and redirect output
+      command: containerd config default | sudo tee /etc/containerd/config.toml
+  
     - name: Change the SystemdCgroup value to false
       lineinfile:
         path: /home/ajaufura/test.toml
@@ -11,6 +32,7 @@
         insertafter: EOF
         regexp: '^SystemdCgroup\s*='
 
+    ##### Disable swap #####
     - name: Modify swappiness value
       sysctl:
         name: vm.swappiness
@@ -40,6 +62,7 @@
     - name: Reload /etc/fstab
       command: mount -a
 
+    ##### Enable bridging #####
     - name: Check if ip_forward line is commented in /home/ajaufura/sysctl.conf
       command: grep -E '^#.*net.ipv4.ip_forward.*$' /home/ajaufura/sysctl.conf
       register: ip_forward_line_commented
@@ -58,6 +81,7 @@
     - name: Print the modified /home/ajaufura/sysctl.conf
       command: cat /home/ajaufura/sysctl.conf
 
+    ##### Enable br_netfilter #####
     - name: Edit k8s.conf file
       blockinfile:
         path: /home/ajaufura/k8s.conf
