@@ -44,7 +44,7 @@
       command: grep -E '^#.*net.ipv4.ip_forward.*$' /home/ajaufura/sysctl.conf
       register: ip_forward_line_commented
       changed_when: ip_forward_line_commented.stdout != ""
-      #ignore_errors: yes
+      ignore_errors: yes
 
     - name: Uncomment the ip_forward line in /home/ajaufura/sysctl.conf
       lineinfile:
