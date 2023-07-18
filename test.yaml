@@ -2,7 +2,7 @@
 - hosts: kubemaster1
   become: true
   tasks:
-    - name: Change the SystemdCgroup value to true
+    - name: Change the SystemdCgroup value to false
       lineinfile:
         path: /home/ajaufura/test.toml
         line: "SystemdCgroup = false"
@@ -25,3 +25,10 @@
         path: /etc/fstab
         regexp: '^/dev/.*swap.*'
         line: '# {{ item }}'
+
+    - name: Print the value of the item variable
+      debug:
+        msg: "{{ item }}"
+
+  vars:
+    item: '/dev/sda1 swap swap defaults 0 0'
