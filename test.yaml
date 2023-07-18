@@ -31,4 +31,4 @@
         msg: "{{ item }}"
 
   vars:
-    item: '/dev/sda1 swap swap defaults 0 0'
+    item: '/swap.img       none    swap    sw      0       0'
