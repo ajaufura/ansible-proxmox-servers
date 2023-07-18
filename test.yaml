@@ -9,7 +9,7 @@
         create: yes
         insertafter: EOF
         regexp: '^SystemdCgroup\s*='
-  tasks:
+        
     - name: Disable swap
       command: sudo swapoff -a
 
