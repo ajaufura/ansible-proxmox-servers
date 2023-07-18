@@ -67,6 +67,3 @@
 
     - name: Print the modified k8s.conf file
       command: cat /home/ajaufura/k8s.conf
-
-    - name: Execute the reboot command
-      command: sudo reboot
