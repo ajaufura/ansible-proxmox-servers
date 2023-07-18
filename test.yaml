@@ -52,7 +52,7 @@
         line: 'net.ipv4.ip_forward=1'
         backrefs: no
         state: present
-      when: ip_forward_line_commented.rc = 0
+      when: ip_forward_line_commented.rc != 0
 
     - name: Print the modified /home/ajaufura/sysctl.conf
       command: cat /home/ajaufura/sysctl.conf
