@@ -24,7 +24,6 @@
       lineinfile:
         path: /etc/fstab
         regexp: '^\s*(swap.*)'
-        state: present
         backup: yes
       register: swap_line
 
