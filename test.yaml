@@ -1,13 +1,19 @@
 ---
 - hosts: kubemaster1
   tasks:
-  - name: Open the containerd config file
-    shell: sudo vi /home/ajaufura/test.toml
-  - name: Change the SystemdCgroup value to true
-    lineinfile:
-      path: /home/ajaufura/test.toml
-      line: "SystemdCgroup = true"
-      state: present
-      create: yes
-      insertafter: EOF
-      regexp: '^SystemdCgroup\s*='
+    - name: Copy the containerd config file
+      copy:
+        src: files/test.toml
+        dest: /home/ajaufura/test.toml
+        owner: ajaufura
+        group: ajaufura
+        mode: 0644
+
+    - name: Change the SystemdCgroup value to true
+      lineinfile:
+        path: /home/ajaufura/test.toml
+        line: "SystemdCgroup = true"
+        state: present
+        create: yes
+        insertafter: EOF
+        regexp: '^SystemdCgroup\s*='
