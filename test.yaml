@@ -3,11 +3,6 @@
   tasks:
   - name: Open the containerd config file
     shell: sudo vi /home/ajaufura/test.toml
-  - name: Find the SystemdCgroup key
-    lineinfile:
-      path: /home/ajaufura/test.toml
-      line: '[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]'
-      state: present
   - name: Change the SystemdCgroup value to true
     lineinfile:
       path: /home/ajaufura/test.toml
