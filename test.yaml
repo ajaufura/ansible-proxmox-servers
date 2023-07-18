@@ -24,16 +24,7 @@
       lineinfile:
         path: /etc/fstab
         regexp: '^\s*(swap.*)'
-        backup: yes
-      register: swap_line
-
-    - name: Comment the swap line
-      lineinfile:
-        path: /etc/fstab
-        regexp: '^.*\sswap\s.*$'
-        line: '# {{ swap_line.line }}'
         state: present
-      when: swap_line.matched
 
     - name: Print the modified /etc/fstab
       command: cat /etc/fstab
