@@ -8,3 +8,6 @@
       path: /home/ajaufura/test.toml
       line: "SystemdCgroup = true"
       state: present
+      create: yes
+      insertafter: EOF
+      regexp: '^SystemdCgroup\s*='
