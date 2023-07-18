@@ -57,3 +57,13 @@
 
     - name: Print the modified /home/ajaufura/sysctl.conf
       command: cat /home/ajaufura/sysctl.conf
+
+    - name: Edit k8s.conf file
+      blockinfile:
+        path: /home/ajaufura/k8s.conf
+        marker: "# {mark} ANSIBLE MANAGED BLOCK - DO NOT MODIFY"
+        block: |
+          br_netfilter
+
+    - name: Print the modified k8s.conf file
+      command: cat /home/ajaufura/k8s.conf
