@@ -20,15 +20,21 @@
     - name: Disable swap
       command: swapoff -a
 
-    - name: Comment out swap line in /etc/fstab
+    - name: Find the swap line in /etc/fstab
       lineinfile:
         path: /etc/fstab
-        regexp: '^/dev/.*swap.*'
-        line: '# {{ item }}'
+        regexp: '^.*\sswap\s.*$'
+        state: present
+        backup: yes
+      register: swap_line
 
-    - name: Print the value of the item variable
-      debug:
-        msg: "{{ item }}"
+    - name: Comment the swap line
+      lineinfile:
+        path: /etc/fstab
+        regexp: '^.*\sswap\s.*$'
+        line: '# {{ swap_line.line }}'
+        state: present
+      when: swap_line.matched
 
-  vars:
-    item: '/swap.img       none    swap    sw      0       0'
+    - name: Print the modified /etc/fstab
+      command: cat /etc/fstab
