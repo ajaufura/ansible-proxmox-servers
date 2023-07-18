@@ -1,11 +1,27 @@
 ---
 - hosts: kubemaster1
+  become: true
   tasks:
     - name: Change the SystemdCgroup value to true
       lineinfile:
         path: /home/ajaufura/test.toml
-        line: "SystemdCgroup = true"
+        line: "SystemdCgroup = false"
         state: present
         create: yes
         insertafter: EOF
         regexp: '^SystemdCgroup\s*='
+
+    - name: Modify swappiness value
+      sysctl:
+        name: vm.swappiness
+        value: 1
+        state: present
+
+    - name: Disable swap
+      command: swapoff -a
+
+    - name: Comment out swap line in /etc/fstab
+      lineinfile:
+        path: /etc/fstab
+        regexp: '^/dev/.*swap.*'
+        line: '# {{ item }}'
