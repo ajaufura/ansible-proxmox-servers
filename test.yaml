@@ -1,14 +1,6 @@
 ---
 - hosts: kubemaster1
   tasks:
-    - name: Copy the containerd config file
-      copy:
-        src: files/test.toml
-        dest: /home/ajaufura/test.toml
-        owner: ajaufura
-        group: ajaufura
-        mode: 0644
-
     - name: Change the SystemdCgroup value to true
       lineinfile:
         path: /home/ajaufura/test.toml
