@@ -48,7 +48,7 @@
     - name: Uncomment the ip_forward line in /home/ajaufura/sysctl.conf
       lineinfile:
         path: /home/ajaufura/sysctl.conf
-        regexp: '^#.*net.ipv4.ip_forward.*$'
+        regexp: '^#net.ipv4.ip_forward.*$'
         line: 'net.ipv4.ip_forward=1'
         backrefs: no
         state: present
