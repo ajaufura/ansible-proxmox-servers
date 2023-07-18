@@ -21,7 +21,7 @@
       command: swapoff -a
 
     - name: Check if swap line is already commented
-      command: grep -E '^\s*#/.*\sswap\s' /etc/fstab
+      command: grep -E '^\s#/.*\sswap\s' /etc/fstab
       register: swap_line_commented
       ignore_errors: yes
 
