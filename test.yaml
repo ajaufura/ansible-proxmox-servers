@@ -23,7 +23,7 @@
     - name: Find the swap line in /etc/fstab
       lineinfile:
         path: /etc/fstab
-        regexp: '^.*\sswap\s.*$'
+        regexp: '^.*swap.*$'
         state: present
         backup: yes
       register: swap_line
