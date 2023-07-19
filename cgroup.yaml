@@ -8,3 +8,4 @@
         section: 'plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options'
         option: SystemdCgroup
         value: true
+        value_type: lower
