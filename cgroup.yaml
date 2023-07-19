@@ -7,9 +7,9 @@
         path: /home/ajaufura/test.toml
       register: toml_content
 
-    - name: Convert content to string
+    - name: Convert content to YAML format
       set_fact:
-        toml_content_string: "{{ toml_content.content | b64decode | decode('utf-8') }}"
+        toml_content_yaml: "{{ toml_content.content | b64decode | to_nice_yaml }}"
 
     - name: Check if SystemdCgroup key exists and update if needed
       block:
@@ -18,12 +18,12 @@
             path: /home/ajaufura/test.toml
             regex: '^SystemdCgroup\\s*=.*$'
             line: 'SystemdCgroup = true'
-          when: "'SystemdCgroup = false' in toml_content_string"
+          when: "'SystemdCgroup = false' in toml_content_yaml"
 
         - name: Add SystemdCgroup key with value true if it doesn't exist
           lineinfile:
             path: /home/ajaufura/test.toml
             line: 'SystemdCgroup = true'
-          when: "'SystemdCgroup' not in toml_content_string"
+          when: "'SystemdCgroup' not in toml_content_yaml"
 
-      when: toml_content_string is defined
+      when: toml_content_yaml is defined
