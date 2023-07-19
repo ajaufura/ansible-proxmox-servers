@@ -20,10 +20,4 @@
             line: 'SystemdCgroup = true'
           when: "'SystemdCgroup = false' in toml_content_yaml"
 
-        - name: Add SystemdCgroup key with value true if it doesn't exist
-          lineinfile:
-            path: /home/ajaufura/test.toml
-            line: 'SystemdCgroup = true'
-          when: "'SystemdCgroup' not in toml_content_yaml"
-
       when: toml_content_yaml is defined
