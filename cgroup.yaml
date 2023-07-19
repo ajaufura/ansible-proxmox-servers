@@ -7,30 +7,19 @@
         path: /home/ajaufura/test.toml
       register: toml_content
 
-    - name: Parse the TOML content
-      community.general.toml_query:
-        data: "{{ toml_content.content | b64decode }}"
-        query: "SystemdCgroup"
-      register: toml_result
+    - name: Parse the TOML content and check SystemdCgroup value
+      set_fact:
+        toml_value: "{{ toml_content.content | b64decode | regex_search('(?m)^SystemdCgroup\\s*=\\s*(\\w+)', '\\1') | default('not_found') }}"
 
-    - name: Check and update SystemdCgroup key
-      block:
-        - name: Check if SystemdCgroup is set to true
-          set_fact:
-            to_update: "{{ toml_result.matches[0].value | default(false) }}"
+    - name: Update SystemdCgroup key to false if it's set to true
+      lineinfile:
+        path: /home/ajaufura/test.toml
+        regex: '^SystemdCgroup\\s*=\\s*true$'
+        line: 'SystemdCgroup = false'
+      when: toml_value == 'true'
 
-        - name: Update the value to false if needed
-          lineinfile:
-            path: /home/ajaufura/test.toml
-            regex: '^SystemdCgroup = true$'
-            line: 'SystemdCgroup = false'
-          when: to_update == true
-
-      rescue:
-        - name: Handle the case when SystemdCgroup key is not found
-          lineinfile:
-            path: /home/ajaufura/test.toml
-            line: 'SystemdCgroup = false'
-          when: toml_result.matches | length == 0
-
-      when: toml_result.matches | length > 0
+    - name: Add SystemdCgroup key if it doesn't exist
+      lineinfile:
+        path: /home/ajaufura/test.toml
+        line: 'SystemdCgroup = false'
+      when: toml_value == 'not_found'
