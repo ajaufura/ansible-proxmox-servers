@@ -11,15 +11,15 @@
       set_fact:
         toml_value: "{{ toml_content.content | b64decode | regex_search('(?m)^SystemdCgroup\\s*=\\s*(\\w+)', '\\1') | default('not_found') }}"
 
-    - name: Update SystemdCgroup key to false if it's set to true
+    - name: Update SystemdCgroup key to true if it's set to false
       lineinfile:
         path: /home/ajaufura/test.toml
-        regex: '^SystemdCgroup\\s*=\\s*true$'
-        line: 'SystemdCgroup = false'
-      when: toml_value == 'true'
+        regex: '^SystemdCgroup\\s*=\\s*false$'
+        line: 'SystemdCgroup = true'
+      when: toml_value == 'false'
 
-    - name: Add SystemdCgroup key if it doesn't exist
+    - name: Add SystemdCgroup key with value true if it doesn't exist
       lineinfile:
         path: /home/ajaufura/test.toml
-        line: 'SystemdCgroup = false'
+        line: 'SystemdCgroup = true'
       when: toml_value == 'not_found'
