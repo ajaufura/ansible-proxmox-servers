@@ -1,0 +1,35 @@
+---
+- name: Update SystemdCgroup key in test.toml
+  hosts: your_target_host
+  become: yes
+  tasks:
+    - name: Read the content of the file
+      slurp:
+        path: /home/ajaufura/test.toml
+      register: toml_content
+
+    - name: Parse the TOML content
+      set_fact:
+        parsed_toml: "{{ toml_content.content | b64decode | from_toml }}"
+
+    - name: Check and update SystemdCgroup key
+      block:
+        - name: Check if SystemdCgroup is set to true
+          set_fact:
+            to_update: "{{ parsed_toml.SystemdCgroup | default(false) }}"
+
+        - name: Update the value to false if needed
+          lineinfile:
+            path: /home/ajaufura/test.toml
+            regex: '^SystemdCgroup = true$'
+            line: 'SystemdCgroup = false'
+          when: to_update == true
+
+      rescue:
+        - name: Handle the case when SystemdCgroup key is not found
+          lineinfile:
+            path: /home/ajaufura/test.toml
+            line: 'SystemdCgroup = false'
+          when: parsed_toml.SystemdCgroup is not defined
+
+      when: parsed_toml.SystemdCgroup is defined
