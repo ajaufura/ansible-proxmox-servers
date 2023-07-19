@@ -2,22 +2,9 @@
 - hosts: kubemaster1
   become: true
   tasks:
-    - name: Read the content of the file
-      slurp:
+    - name: Ensure SystemdCgroup is set to true in test.toml
+      ini_file:
         path: /home/ajaufura/test.toml
-      register: toml_content
-
-    - name: Convert content to YAML format
-      set_fact:
-        toml_content_yaml: "{{ toml_content.content | b64decode | to_nice_yaml }}"
-
-    - name: Check if SystemdCgroup key exists and update if needed
-      block:
-        - name: Find and update SystemdCgroup key to true
-          lineinfile:
-            path: /home/ajaufura/test.toml
-            regex: '^SystemdCgroup\\s*=.*$'
-            line: 'SystemdCgroup = true'
-          when: "'SystemdCgroup = false' in toml_content_yaml"
-
-      when: toml_content_yaml is defined
+        section: 'plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options'
+        option: SystemdCgroup
+        value: true
