@@ -1,7 +1,6 @@
 ---
-- name: Update SystemdCgroup key in test.toml
-  hosts: your_target_host
-  become: yes
+- hosts: kubemaster1
+  become: true
   tasks:
     - name: Read the content of the file
       slurp:
