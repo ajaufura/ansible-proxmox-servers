@@ -8,14 +8,16 @@
       register: toml_content
 
     - name: Parse the TOML content
-      set_fact:
-        parsed_toml: "{{ toml_content.content | b64decode | from_toml }}"
+      community.general.toml_query:
+        data: "{{ toml_content.content | b64decode }}"
+        query: "SystemdCgroup"
+      register: toml_result
 
     - name: Check and update SystemdCgroup key
       block:
         - name: Check if SystemdCgroup is set to true
           set_fact:
-            to_update: "{{ parsed_toml.SystemdCgroup | default(false) }}"
+            to_update: "{{ toml_result.matches[0].value | default(false) }}"
 
         - name: Update the value to false if needed
           lineinfile:
@@ -29,6 +31,6 @@
           lineinfile:
             path: /home/ajaufura/test.toml
             line: 'SystemdCgroup = false'
-          when: parsed_toml.SystemdCgroup is not defined
+          when: toml_result.matches | length == 0
 
-      when: parsed_toml.SystemdCgroup is defined
+      when: toml_result.matches | length > 0
