@@ -3,7 +3,8 @@
   become: true
   tasks:
     - name: Ensure SystemdCgroup is set to true in test.toml
-      replace:
+      ini_file:
         path: /home/ajaufura/test.toml
-        regexp: '^(\[plugins\."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options\].*SystemdCgroup =) (True|False)$'
-        replace: '\1 true'
+        section: 'plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options'
+        option: SystemdCgroup
+        value: true
