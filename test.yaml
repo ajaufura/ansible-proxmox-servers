@@ -66,28 +66,25 @@
       command: mount -a
 
     ##### Enable bridging #####
-    - name: Check if ip_forward line is commented in /home/ajaufura/sysctl.conf
-      command: grep -E '^#.*net.ipv4.ip_forward.*$' /home/ajaufura/sysctl.conf
+    - name: Check if ip_forward line is commented in /etc/sysctl.conf
+      command: grep -E '^#.*net.ipv4.ip_forward.*$' /etc/sysctl.conf
       register: ip_forward_line_commented
       changed_when: ip_forward_line_commented.stdout != ""
       ignore_errors: yes
 
-    - name: Uncomment the ip_forward line in /home/ajaufura/sysctl.conf
+    - name: Uncomment the ip_forward line in /etc/sysctl.conf
       lineinfile:
-        path: /home/ajaufura/sysctl.conf
+        path: /etc/sysctl.conf
         regexp: '^#.*net.ipv4.ip_forward.*$'
         line: 'net.ipv4.ip_forward=1'
         backrefs: no
         state: present
       when: ip_forward_line_commented.stdout != ""
 
-    - name: Print the modified /home/ajaufura/sysctl.conf
-      command: cat /home/ajaufura/sysctl.conf
-
     ##### Enable br_netfilter #####
     - name: Edit k8s.conf file
       blockinfile:
-        path: /home/ajaufura/k8s.conf
+        path: /etc/modules-load.d/k8s.conf
         marker: "# {mark} ANSIBLE MANAGED BLOCK - DO NOT MODIFY"
         block: |
           br_netfilter
