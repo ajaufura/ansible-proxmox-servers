@@ -29,7 +29,6 @@
         section: '^\s*plugins\."io\.containerd\.grpc\.v1\.cri"\.containerd\.runtimes\.runc\.options\s*$'
         option: '^[\s]*SystemdCgroup$'
         value: true
-        mode: ensure
 
     ##### Disable swap #####
     - name: Modify swappiness value
