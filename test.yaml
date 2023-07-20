@@ -26,8 +26,8 @@
     - name: Ensure SystemdCgroup is set to true in config.toml
       ini_file:
         path: /etc/containerd/config.toml
-        section: '^\s*plugins\."io\.containerd\.grpc\.v1\.cri"\.containerd\.runtimes\.runc\.options\s*$'
-        option: '^[\s]*SystemdCgroup$'
+        #section: '^\s*plugins\."io\.containerd\.grpc\.v1\.cri"\.containerd\.runtimes\.runc\.options\s*$'
+        option: '^\s*SystemdCgroup$'
         value: true
 
     ##### Disable swap #####
