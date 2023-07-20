@@ -94,3 +94,14 @@
 
     - name: Print the modified k8s.conf file
       command: cat /home/ajaufura/k8s.conf
+
+    - name: Download the Kubernetes apt GPG key
+      get_url:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        dest: /usr/share/keyrings/kubernetes-archive-keyring.gpg
+        mode: '0644'
+
+    - name: Add the Kubernetes apt repository to sources list
+      lineinfile:
+        path: /etc/apt/sources.list.d/kubernetes.list
+        line: 'deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main'
