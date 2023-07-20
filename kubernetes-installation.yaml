@@ -3,17 +3,11 @@
   become: true
   tasks:
   
-    - name: Create the /etc/apt/sources.list.d/ directory if it doesn't exist
-      file:
-        path: /etc/apt/sources.list.d
-        state: directory
-        mode: '0755'
-
     - name: Ensure Kubernetes apt repository directory exists
       file:
         path: /etc/apt/sources.list.d
         state: directory
-        mode: '0755'
+         mode: '0755'
 
     - name: Create the Kubernetes apt repository file
       copy:
@@ -27,7 +21,7 @@
         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
         dest: /usr/share/keyrings/kubernetes-archive-keyring.gpg
         mode: '0644'
-        
+
     - name: Install kubeadm, kubectl, and kubelet packages
       apt:
         name:
@@ -36,4 +30,9 @@
           - kubelet
         state: present
         update_cache: yes
+
+    handlers:
+      - name: Update apt cache
+        apt:
+          update_cache: yes
 
