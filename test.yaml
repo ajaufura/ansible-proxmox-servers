@@ -31,8 +31,8 @@
     - name: Update SystemdCgroup option
       lineinfile:
         path: /etc/containerd/config.toml
-        regex: '^\s*SystemdCgroup\s*='
-        line: 'SystemdCgroup = true'
+        regex: '(\s*SystemdCgroup\s*=\s*).*$'
+        line: '\1true'
         backrefs: yes
 
     ##### Disable swap #####
