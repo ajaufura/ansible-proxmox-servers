@@ -23,15 +23,18 @@
     - name: Run containerd config default and redirect output
       command: containerd config default | sudo tee /etc/containerd/config.toml
 
-    - name: Ensure SystemdCgroup is set to true in config.toml
-      ini_file:
+    - name: Read content of config.toml
+      slurp:
         path: /etc/containerd/config.toml
-        section: 'plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options'
-        option: 'SystemdCgroup'
-        value: true
-        no_extra_spaces: yes
-        create: yes
-        has_option: yes
+      register: config_content
+
+    - name: Update SystemdCgroup option
+      lineinfile:
+        path: /etc/containerd/config.toml
+        regex: '^\s*SystemdCgroup\s*='
+        line: 'SystemdCgroup = true'
+        backrefs: yes
+      when: "'SystemdCgroup' not in config_content['content'] | b64decode | string"
 
     ##### Disable swap #####
     - name: Modify swappiness value
