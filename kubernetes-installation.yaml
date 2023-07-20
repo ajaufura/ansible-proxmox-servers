@@ -1,5 +1,5 @@
 ---
-- hosts: kubemaster1,kubeworker1
+- hosts: kubemaster1,kubeworker1,kubemaster2
   become: true
   tasks:
   
