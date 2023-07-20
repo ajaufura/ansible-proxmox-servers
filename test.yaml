@@ -1,0 +1,6 @@
+- hosts: kubemaster1
+  tasks:
+    - name: Create the k8s.conf file if it doesn't exist
+      file:
+        path: /etc/modules-load.d/toto.conf
+        state: touch
