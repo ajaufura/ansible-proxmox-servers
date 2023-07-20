@@ -34,7 +34,6 @@
         regex: '^\s*SystemdCgroup\s*='
         line: 'SystemdCgroup = true'
         backrefs: yes
-      when: "'SystemdCgroup' not in config_content['content'] | b64decode | string"
 
     ##### Disable swap #####
     - name: Modify swappiness value
