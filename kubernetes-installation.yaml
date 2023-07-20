@@ -14,6 +14,11 @@
         path: /etc/apt/sources.list.d/kubernetes.list
         line: 'deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main'
 
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      become: true
+
     - name: Install kubeadm, kubectl, and kubelet packages
       apt:
         name:
