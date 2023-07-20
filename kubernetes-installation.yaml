@@ -9,23 +9,25 @@
         state: directory
         mode: '0755'
 
+    - name: Ensure Kubernetes apt repository directory exists
+      file:
+        path: /etc/apt/sources.list.d
+        state: directory
+        mode: '0755'
+
+    - name: Create the Kubernetes apt repository file
+      copy:
+        content: 'deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main'
+        dest: /etc/apt/sources.list.d/kubernetes.list
+        mode: '0644'
+      notify: Update apt cache
+
     - name: Download the Kubernetes apt GPG key
       get_url:
         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
         dest: /usr/share/keyrings/kubernetes-archive-keyring.gpg
         mode: '0644'
-
-    - name: Add the Kubernetes apt repository to sources list
-      lineinfile:
-        path: /etc/apt/sources.list.d/kubernetes.list
-        line: 'deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main'
-        create: yes
-
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-      become: true
-
+        
     - name: Install kubeadm, kubectl, and kubelet packages
       apt:
         name:
@@ -34,3 +36,4 @@
           - kubelet
         state: present
         update_cache: yes
+
