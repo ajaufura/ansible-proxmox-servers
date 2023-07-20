@@ -93,6 +93,4 @@
         marker: "# {mark} ANSIBLE MANAGED BLOCK - DO NOT MODIFY"
         block: |
           br_netfilter
-
-    - name: Print the modified k8s.conf file
-      command: cat /etc/modules-load.d/k8s.conf
+    
