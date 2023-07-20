@@ -23,9 +23,9 @@
     - name: Run containerd config default and redirect output
       command: containerd config default | sudo tee /etc/containerd/config.toml
   
-    - name: Ensure SystemdCgroup is set to true in test.toml
+    - name: Ensure SystemdCgroup is set to true in config.toml
       ini_file:
-        path: /home/ajaufura/test.toml
+        path: /etc/containerd/config.toml
         section: 'plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options'
         option: SystemdCgroup
         value: true
