@@ -9,16 +9,16 @@
         state: directory
         mode: '0755'
 
-    - name: Create the Kubernetes apt repository
-      apt_repository:
-        repo: deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
-        state: present
+    - name: add Kubernetes apt-key
+      apt_key:
+       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+       state: present
 
-    - name: Download the Kubernetes apt GPG key
-      get_url:
-        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-        dest: /usr/share/keyrings/kubernetes-archive-keyring.gpg
-        mode: '0644'
+    - name: add Kubernetes' APT repository
+      apt_repository:
+      repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+      state: present
+      filename: 'kubernetes'
 
     - name: Install kubeadm, kubectl, and kubelet packages
       apt:
