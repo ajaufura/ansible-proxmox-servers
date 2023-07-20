@@ -14,7 +14,6 @@
         content: 'deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main'
         dest: /etc/apt/sources.list.d/kubernetes.list
         mode: '0644'
-      notify: Update apt cache
 
     - name: Download the Kubernetes apt GPG key
       get_url:
@@ -29,10 +28,5 @@
           - kubectl
           - kubelet
         state: present
-        update_cache: yes
-
-  handlers:
-    - name: Update apt cache
-      apt:
         update_cache: yes
 
