@@ -9,11 +9,10 @@
         state: directory
         mode: '0755'
 
-    - name: Create the Kubernetes apt repository file
-      copy:
-        content: 'deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main'
-        dest: /etc/apt/sources.list.d/kubernetes.list
-        mode: '0644'
+    - name: Create the Kubernetes apt repository
+      apt_repository:
+        repo: deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
 
     - name: Download the Kubernetes apt GPG key
       get_url:
