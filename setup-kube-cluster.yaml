@@ -82,6 +82,11 @@
       when: ip_forward_line_commented.stdout != ""
 
     ##### Enable br_netfilter #####
+    - name: Create the k8s.conf file if it doesn't exist
+      file:
+        path: /etc/modules-load.d/k8s.conf
+        state: touch
+
     - name: Edit k8s.conf file
       blockinfile:
         path: /etc/modules-load.d/k8s.conf
@@ -90,4 +95,4 @@
           br_netfilter
 
     - name: Print the modified k8s.conf file
-      command: cat /home/ajaufura/k8s.conf
+      command: cat /etc/modules-load.d/k8s.conf
