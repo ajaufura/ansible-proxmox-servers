@@ -1,4 +1,5 @@
 - hosts: kubemaster1
+  become: true
   tasks:
     - name: Create the k8s.conf file if it doesn't exist
       file:
